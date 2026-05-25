@@ -1,0 +1,50 @@
+#!/bin/bash
+# Re-apply Claude environment after a merge.
+# Args (from git): $1=squash_merge (1 if squash, 0 otherwise)
+# NOTE: post-merge does not receive branch refs — call the switcher directly.
+
+SCRIPT_PATH="$(git rev-parse --show-toplevel)/scripts/claude-env.sh"
+
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+CYAN="\033[0;36m"
+BLUE="\033[0;34m"
+MAGENTA="\033[0;35m"
+RESET="\033[0m"
+
+SWITCHER_OUTPUT=$("$SCRIPT_PATH" | sed 's/\x1b\[[0-9;]*m//g')
+NEW_ENV=$(echo "$SWITCHER_OUTPUT" | grep 'Switched to.*mode' | awk '{print $(NF-1)}')
+
+if [[ -z "$NEW_ENV" ]]; then
+    NEW_ENV="unknown"
+    ENV_COLOR=$YELLOW
+    DESKTOP_EMOJI="⚠️"
+    echo -e "${YELLOW}Could not detect Claude environment${RESET}"
+else
+    case "$NEW_ENV" in
+        dev)    ENV_COLOR=$BLUE;    DESKTOP_EMOJI="🟦" ;;
+        review) ENV_COLOR=$MAGENTA; DESKTOP_EMOJI="🟪" ;;
+        ci)     ENV_COLOR=$RED;     DESKTOP_EMOJI="🟥" ;;
+        *)      ENV_COLOR=$YELLOW;  DESKTOP_EMOJI="⚠️" ;;
+    esac
+    echo -e "${GREEN}Environment detected:${RESET} ${ENV_COLOR}$NEW_ENV mode${RESET}"
+fi
+
+CLAUDE_PIDS=($(pgrep -u "$USER" -f "^claude" 2>/dev/null))
+SESSION_COUNT=${#CLAUDE_PIDS[@]}
+
+if [[ $SESSION_COUNT -gt 0 ]]; then
+    kill "${CLAUDE_PIDS[@]}" 2>/dev/null
+    CLAUDE_STATUS="${GREEN}$SESSION_COUNT session(s) stopped — run \`claude\` to restart with new config${RESET}"
+    NOTIFY_MSG="Post-merge: $NEW_ENV mode\n$SESSION_COUNT session(s) stopped — run \`claude\` to restart"
+else
+    CLAUDE_STATUS="${YELLOW}No running session(s)${RESET}"
+    NOTIFY_MSG="Post-merge: $NEW_ENV mode"
+fi
+
+echo -e "${CYAN}----------------------------------------${RESET}"
+echo -e "${CYAN}Notification:${RESET}"
+echo -e "   Environment: ${ENV_COLOR}$NEW_ENV mode${RESET}"
+echo -e "   Claude:      $CLAUDE_STATUS"
+echo -e "${CYAN}----------------------------------------${RESET}"

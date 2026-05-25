@@ -1,0 +1,108 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": [
+      "Read(**/*.jks)",
+      "Read(**/*.keystore)",
+      "Read(**/keystore.properties)",
+      "Read(**/local.properties)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/google-services.json)",
+      "Read(**/firebase*.json)",
+      "Read(**/secrets.properties)",
+      "Read(**/secret.properties)",
+      "Read(**/apikeys.properties)",
+      "Read(**/api.properties)",
+      "Read(**/gradle.properties)",
+
+      "Read(**/*.db)",
+      "Read(**/*.sqlite)",
+      "Read(**/*.sqlite3)",
+      "Read(**/*.realm)",
+      "Read(**/databases/**)",
+
+      "Read(**/shared_prefs/**)",
+      "Read(**/*.preferences_pb)",
+
+      "Read(**/crypto/**)",
+      "Read(**/*cipher*)",
+      "Read(**/*sqlcipher*)",
+
+      "Read(**/biometric/**)",
+      "Read(**/fingerprint/**)",
+      "Read(**/face/**)",
+
+      "Read(**/build/**)",
+      "Read(**/.gradle/**)",
+      "Read(**/captures/**)",
+      "Read(**/outputs/**)",
+      "Read(**/*.apk)",
+      "Read(**/*.aab)",
+
+      "Read(**/*.log)",
+      "Read(**/logs/**)",
+      "Read(**/crash/**)",
+      "Read(**/tombstones/**)",
+
+      "Read(.git/config)",
+      "Edit(.git/**)",
+      "Edit(.github/workflows/**)",
+      "Edit(.gitlab-ci.yml)",
+      "Edit(Jenkinsfile)",
+
+      "Edit(**/signing/**)",
+      "Read(**/certs/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+
+      "Edit(**/migration/**)",
+      "Edit(**/migrations/**)",
+
+      "Bash(rm -rf *)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fd*)",
+      "Bash(git push --force*)",
+      "Bash(./gradlew publish*)",
+      "Bash(./gradlew upload*)",
+      "Bash(./gradlew assembleRelease*)",
+      "Bash(./gradlew bundleRelease*)"
+    ]
+  },
+
+  "autoApply": false,
+  "confirmBeforeEdit": true,
+
+  "contextFiles": [
+    "CLAUDE.md",
+
+    "android/guidelines/architecture_standard.md",
+    "android/guidelines/architecture_guidelines.md",
+    "android/guidelines/jetpack_stack.md",
+    "android/guidelines/solid_principles.md",
+    "android/database/database_guidelines.md",
+    "android/di/hilt_guidelines.md",
+    "android/networking/okhttp_networking.md",
+    "android/networking/token_interceptor.md",
+    "android/preferences/datastore.md",
+    "android/security/security_guidelines.md",
+    "android/testing/testing_guidelines.md",
+    "android/ui/xml_guidelines.md",
+    
+    "concept/app_concept_v2.md",
+
+    "workflows/code_review.md",
+    "workflows/hotfix.md",
+
+    "templates/pr_template.md",
+
+    "prompts/code_review.md"
+  ]
+}

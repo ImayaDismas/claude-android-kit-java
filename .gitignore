@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local environment overrides
+.env
+.env.*
+.mcp-credentials
+local.properties
+
+# Compiled / generated
+build/
+*.class
+*.apk
+*.aab

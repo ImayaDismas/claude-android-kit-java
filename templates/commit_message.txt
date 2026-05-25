@@ -1,0 +1,48 @@
+Author: YOUR_NAME <YOUR_EMAIL>
+
+<type>(<scope>): <summary — present tense, max 72 chars>
+
+<body — explain WHY this change was made, not what files changed.
+Include context a future reader would need: what was broken, what
+constraint drove the decision, what alternative was rejected and why.
+Wrap at 72 chars.>
+
+---
+
+Types:
+  feat      New feature or capability
+  fix       Bug fix
+  refactor  Code change with no behaviour change
+  test      Adding or updating tests only
+  chore     Tooling, dependencies, build config
+  docs      Documentation only
+  perf      Performance improvement
+  style     Formatting, no logic change
+
+Scopes (use the feature area):
+  ledger | reconciliation | credit | summary | export | security
+  di | db | ui | networking | preferences | onboarding
+
+Rules:
+  - No Co-Authored-By line — ever. The sole author is YOUR_NAME.
+  - No Claude attribution of any kind in the commit message body.
+
+---
+
+Examples:
+
+  feat(credit): add partial payment support with running balance
+
+  fix(reconciliation): prevent duplicate entries on repeated SMS import
+
+  Airtel Money sends the same confirmation SMS twice on slow networks.
+  The parser now deduplicates by transaction reference before inserting,
+  rather than relying on the caller to filter.
+
+  refactor(di): move OkHttpClient builder into NetworkModule
+
+  Client was being instantiated in two places. Consolidating to a single
+  @Singleton in NetworkModule ensures interceptors are applied consistently
+  and avoids a second connection pool being created.
+
+  test(credit): add givenPartialPayment_whenRecording_thenBalanceUpdates
