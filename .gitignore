@@ -24,6 +24,7 @@ build/
 *.apk
 *.aab
 
-# Ship logs (project-specific; only the sample is committed to this kit)
+# Ship logs (project-specific; only the index and sample are committed to this kit)
 shipped/*.md
+!shipped/index.md
 !shipped/phase-1-foundation.md

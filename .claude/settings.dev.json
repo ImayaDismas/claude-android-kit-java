@@ -123,6 +123,7 @@
     "examples/hilt_modules.md",
 
     "concept/app_concept_v2.md",
-    "tasks/active.md"
+    "tasks/active.md",
+    "shipped/index.md"
   ]
 }

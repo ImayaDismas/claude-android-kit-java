@@ -30,6 +30,7 @@ TRANSITION CHECK (run before starting work):
      - Set Status to "Shipped" and fill in the Shipped date.
      - Write a 1–2 sentence Summary capturing what was delivered and why it mattered.
      - Add any architectural decisions or gotchas to the Notes section.
+     - Append a new row to shipped/index.md for the completed group.
   6. Once the ship log is written, create the task list for the new group in
      tasks/active.md (In Progress / Completed / Blocked / Next Session)
      and update the group name at the top of the file.

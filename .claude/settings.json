@@ -119,6 +119,7 @@
     "examples/hilt_modules.md",
 
     "concept/app_concept.md",
-    "tasks/active.md"
+    "tasks/active.md",
+    "shipped/index.md"
   ]
 }
