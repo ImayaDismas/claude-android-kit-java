@@ -23,6 +23,7 @@ The kit enforces Java-first, XML-first Android development: Clean Architecture +
 | `concept/` | App concept documentation — start here before writing any code |
 | `prompts/` | Reusable task prompts — new project start, session continue, scaffold a feature, review code, write a commit message, debug, refactor |
 | `tasks/` | Cross-session task tracker — `active.md` persists what is in progress, blocked, and next across Claude sessions |
+| `shipped/` | Ship logs — one `.md` file per completed group (phase, feature, sprint, milestone) recording what was delivered, deferred, and any architectural decisions worth preserving |
 | `workflows/` | Step-by-step process guides Claude follows automatically — feature development, bug fixing, hotfix, code review, CI failure triage |
 | `templates/` | Commit message format with examples, PR template, and issue template — Claude uses these automatically when committing, opening PRs, or filing issues |
 | `examples/` | Annotated before/after examples of correct patterns — large class refactor, LiveData + UiState, offline-first repository, Hilt modules |
@@ -74,6 +75,7 @@ cp -r /path/to/claude-android-kit-java/android ./
 cp -r /path/to/claude-android-kit-java/concept ./
 cp -r /path/to/claude-android-kit-java/prompts ./
 cp -r /path/to/claude-android-kit-java/tasks ./
+cp -r /path/to/claude-android-kit-java/shipped ./
 cp -r /path/to/claude-android-kit-java/workflows ./
 cp -r /path/to/claude-android-kit-java/templates ./
 cp -r /path/to/claude-android-kit-java/examples ./
@@ -163,7 +165,7 @@ cp -r /path/to/claude-android-kit-java/examples ./
 cp    /path/to/claude-android-kit-java/CLAUDE.md ./
 ```
 
-> Do **not** re-copy `tasks/` — that folder holds your project's task state. Overwriting it clears your in-progress and completed task history.
+> Do **not** re-copy `tasks/` or `shipped/` — those folders hold your project's task state and ship logs. Overwriting them clears your in-progress history and delivery records.
 
 After re-copying, check if any new files introduced new `YOUR_NAME` or `YOUR_EMAIL` placeholders:
 
@@ -193,6 +195,7 @@ The kit files are Claude's configuration — they are not your app's source code
 android/
 prompts/
 tasks/
+shipped/
 workflows/
 templates/
 scripts/
@@ -497,9 +500,9 @@ Paste the contents of `prompts/new_project.md` into Claude.
 
 What it does in one shot:
 - Verifies all context areas are loaded (flags any gaps before you start)
-- Pulls the active Stitch design system and lists available screens
-- Reads the Phase 1 feature list from the app concept and builds a task list
-- Writes that task list to `tasks/active.md` so it persists to the next session
+- Lists all groups (phases, features, sprints, milestones) from `concept/app_concept.md` and asks which to start with
+- Pulls the active Stitch design system and lists available screens for the chosen group
+- Builds a task list from the chosen group's deliverables and writes it to `tasks/active.md`
 - Confirms what you are building and what you are starting with today
 
 This prompt is intentionally thorough — it runs **once** per project. After this, use `reorient.md` every session.
@@ -516,8 +519,9 @@ Paste the contents of `prompts/resume_project.md` into Claude, filling in the tw
 
 What it does:
 - Verifies all context areas are loaded
+- Lists all groups from `concept/app_concept.md` and asks which to resume
 - Pulls the active Stitch design system
-- Reconstructs the Phase 1 task list from what you tell it, marking the right task as in-progress
+- Reconstructs the task list for the chosen group from what you tell it, marking the right task as in-progress
 - Writes the reconstructed state to `tasks/active.md`
 
 After this session, switch to `reorient.md` — this prompt is a one-time bridge, not a recurring start.
@@ -533,11 +537,14 @@ Paste the contents of `prompts/reorient.md` into Claude.
 What it does:
 - Summarises task state from `tasks/active.md` — already in context, no file read needed
 - States in-progress, blocked, and next in three lines
-- Starts work immediately
+- Checks if the current group is complete; if so, lists remaining groups and asks which to tackle next, writes the ship log for the finished group, then initialises the new group's task list
+- Starts work immediately if tasks remain in the current group
 
 It does **not** re-summarise guidelines or read files — both are already loaded by the harness. The prompt is a few lines of direction, not a context-loading operation.
 
-**At the end of every session**, Claude updates `tasks/active.md` — moving completed items, noting any blockers, and writing the next task. The file is the handoff between sessions.
+**At the end of every session**, Claude updates two files:
+- `tasks/active.md` — moves completed items, notes blockers, writes the next task
+- `shipped/[group-slug].md` — updates completed sub-tasks with today's date, logs any new deferrals or blockers discovered this session
 
 ---
 
@@ -549,6 +556,21 @@ It does **not** re-summarise guidelines or read files — both are already loade
 | Next Session | First task to pick up at the start of the next session |
 | Blocked | Tasks that cannot proceed and why |
 | Completed | Done tasks with a brief outcome note |
+
+### Ship log: `shipped/[group-slug].md`
+
+Created automatically by Claude when a group is fully complete (during the TRANSITION CHECK in `reorient.md`). One file per group, named after the group — e.g. `shipped/phase-1-foundation.md`, `shipped/feature-auth.md`. Use `templates/ship_log.md` as the base if creating manually.
+
+| Section | Purpose |
+|---------|---------|
+| Summary | 1–2 sentences on what was delivered and why it mattered |
+| Sub-tasks | Table of every sub-task with its final status |
+| Completed | Done sub-tasks with delivery date and a brief note |
+| In Progress | Sub-tasks still running (empty once the group is shipped) |
+| Pending | Sub-tasks not yet started |
+| Blocked | Sub-tasks that could not proceed and why |
+| Deferred | Sub-tasks consciously pushed to a later group, with destination |
+| Notes | Architectural decisions, trade-offs, and gotchas worth preserving |
 
 ---
 
@@ -597,7 +619,7 @@ It does **not** re-summarise guidelines or read files — both are already loade
 | List all environments | `./scripts/claude-env.sh list` |
 | Show usage | `./scripts/claude-env.sh help` |
 | Install git hooks | `./scripts/install-hooks.sh` |
-| Apply kit to project | `cp -r .claude android prompts tasks workflows templates scripts /your/project/` |
+| Apply kit to project | `cp -r .claude android prompts tasks shipped workflows templates scripts /your/project/` |
 | Restart Claude (soft) | `/clear` — in Claude session |
 | Restart Claude (full — CLI) | `Ctrl+C` → `claude` |
 | Restart Claude (full — VS Code) | `+` button or `Cmd+Shift+P` → Claude: New Conversation |
