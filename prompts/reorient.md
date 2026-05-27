@@ -15,7 +15,19 @@ State in three lines:
 Do not summarise architecture, guidelines, or re-read any files — all context is already loaded.
 If today's first task involves a UI screen, pull the relevant screen from Stitch before writing any code.
 
-Start work immediately after this check.
+TRANSITION CHECK (run before starting work):
+- If tasks/active.md shows no remaining In Progress or Next Session tasks for
+  the current group, do not start coding. Instead:
+  1. Read concept/app_concept.md for the full list of groups (phases, features,
+     sprints, milestones — whatever term it uses).
+  2. Present all groups in a table showing which are done and which remain.
+  3. Ask: "[Group name] is complete. Which one do you want to tackle next?"
+  4. Wait for the user's answer.
+  5. Once the user chooses, create the task list for the new group in
+     tasks/active.md (In Progress / Completed / Blocked / Next Session)
+     and update the group name at the top of the file.
+  6. Confirm the new group, its first task, and any missing Stitch screens.
+- If tasks remain in the current group, start work immediately.
 ```
 
 ---
