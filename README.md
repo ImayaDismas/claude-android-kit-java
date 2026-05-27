@@ -71,6 +71,7 @@ cd /path/to/your/android/project
 # Copy Claude settings and guidelines
 cp -r /path/to/claude-android-kit-java/.claude ./
 cp -r /path/to/claude-android-kit-java/android ./
+cp -r /path/to/claude-android-kit-java/concept ./
 cp -r /path/to/claude-android-kit-java/prompts ./
 cp -r /path/to/claude-android-kit-java/tasks ./
 cp -r /path/to/claude-android-kit-java/workflows ./
