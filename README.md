@@ -23,7 +23,7 @@ The kit enforces Java-first, XML-first Android development: Clean Architecture +
 | `concept/` | App concept documentation — start here before writing any code |
 | `prompts/` | Reusable task prompts — new project start, session continue, scaffold a feature, review code, write a commit message, debug, refactor |
 | `tasks/` | Cross-session task tracker — `active.md` persists what is in progress, blocked, and next across Claude sessions |
-| `shipped/` | Ship logs — one `.md` file per completed group (phase, feature, sprint, milestone) recording what was delivered, deferred, and any architectural decisions worth preserving |
+| `shipped/` | Ship logs — one `.md` file per completed group recording what was delivered, deferred, and any architectural decisions worth preserving; `index.md` is auto-loaded at session start so Claude always knows what has shipped |
 | `workflows/` | Step-by-step process guides Claude follows automatically — feature development, bug fixing, hotfix, code review, CI failure triage |
 | `templates/` | Commit message format with examples, PR template, and issue template — Claude uses these automatically when committing, opening PRs, or filing issues |
 | `examples/` | Annotated before/after examples of correct patterns — large class refactor, LiveData + UiState, offline-first repository, Hilt modules |
@@ -468,11 +468,13 @@ You do not need to tell Claude to read the guidelines. The `contextFiles` array 
   "android/security/security_guidelines.md",
   "android/testing/testing_guidelines.md",
   "android/ui/xml_guidelines.md",
-  "concept/app_concept_v2.md"
+  "concept/app_concept_v2.md",
+  "tasks/active.md",
+  "shipped/index.md"
 ]
 ```
 
-Claude enters every session already knowing your architecture rules, stack, security constraints, and app concept. You just start working.
+Claude enters every session already knowing your architecture rules, stack, security constraints, app concept, active tasks, and what has already shipped. You just start working.
 
 > **If guidelines change mid-session** (e.g. you edit a guideline file while Claude is running), restart Claude to reload them. Config is read once at session start.
 
@@ -585,6 +587,7 @@ Created automatically by Claude when a group is fully complete (during the TRANS
 | Architecture patterns | `examples/` — auto-loaded in dev; Claude knows the correct pattern for LiveData + UiState, offline-first repositories, Hilt modules, and class refactoring |
 | Working code samples | `android/samples/` — not auto-loaded; read on demand when building a specific screen, API setup, or paged list |
 | Task state | `tasks/active.md` — auto-loaded in dev; persists what is in progress across sessions |
+| Shipping history | `shipped/index.md` — auto-loaded in dev; one-liner per completed group so Claude knows what has already shipped without loading full log files |
 | Permissions | `settings.json` — what Claude is allowed to run |
 | Environment | `claude-env.sh` swaps `settings.json` presets |
 | Trigger prompts | `prompts/` — paste into Claude to start a session, scaffold a feature, debug, or review |
