@@ -67,8 +67,6 @@
       "Read(**/*.key)",
       "Read(**/*.p12)",
 
-      // "Edit(android/guidelines/architecture_standard.md)",
-
       "Edit(**/migration/**)",
       "Edit(**/migrations/**)",
 
